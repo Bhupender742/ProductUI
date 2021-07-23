@@ -38,6 +38,11 @@ class CustomTableViewCell: UITableViewCell {
         let label = UILabel()
         return label
     }()
+    
+    private lazy var bookButton: UIButton = {
+       let button = UIButton()
+       return button
+    }()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -68,7 +73,7 @@ class CustomTableViewCell: UITableViewCell {
         
         containerView.addSubview(nameLabel)
         nameLabel.anchor(containerView.topAnchor, left: imagePreview.rightAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 8, bottomConstant: 0, rightConstant: 8, widthConstant: 0, heightConstant: 0)
-        nameLabel.numberOfLines = 2
+        nameLabel.numberOfLines = 3
         nameLabel.font = UIFont.systemFont(ofSize: 18)
         
         containerView.addSubview(priceLabel)
