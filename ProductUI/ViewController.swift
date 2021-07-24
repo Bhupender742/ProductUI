@@ -35,6 +35,7 @@ class ViewController: UIViewController {
 
 }
 
+//MARK:- ViewController Extension
 extension ViewController {
     private func setUpTableView() {
         myTableView.register(CustomTableViewCell.self, forCellReuseIdentifier: String(describing: CustomTableViewCell.self))
@@ -50,8 +51,12 @@ extension ViewController {
 
 //MARK:- TableViewDelegate Methods
 extension ViewController: UITableViewDelegate {
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 150
     }
     
@@ -68,13 +73,13 @@ extension ViewController: UITableViewDataSource {
         
         let imageURL = productList[indexPath.row].images?[0]
         
-        let productName = productList[indexPath.row].name!
+        let productName = productList[indexPath.row].name ?? ""
         
         let productPrice = productList[indexPath.row].price?.priceDisplay
         let strikedProductPrice = productList[indexPath.row].price?.strikeThroughPriceDisplay ?? ""
-        let minProductPrice = productList[indexPath.row].price?.minPrice
+        let minProductPrice = productList[indexPath.row].price?.minPrice ?? 0
         
-        cell?.configure(imageURL: imageURL!, name: productName, price: productPrice!, strikedPrice: strikedProductPrice, minPrice: minProductPrice!)
+        cell?.configure(imageURL: imageURL, name: productName, price: productPrice!, strikedPrice: strikedProductPrice, minPrice: minProductPrice)
         
         return cell!
     }

@@ -69,28 +69,35 @@ class CustomTableViewCell: UITableViewCell {
         containerView.fillSuperview()
         
         containerView.addSubview(imagePreview)
-        imagePreview.anchor(containerView.topAnchor, left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: nil, topConstant: 8, leftConstant: 8, bottomConstant: 8, rightConstant: 0, widthConstant: 100, heightConstant: 0)
+        imagePreview.anchor(nil, left: containerView.leftAnchor, bottom: nil, right: nil, topConstant: 0, leftConstant: 8, bottomConstant: 8, rightConstant: 0, widthConstant: 100, heightConstant: 100)
+        imagePreview.anchorCenterYToSuperview(constant: 0)
         
         containerView.addSubview(nameLabel)
         nameLabel.anchor(containerView.topAnchor, left: imagePreview.rightAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 8, bottomConstant: 0, rightConstant: 8, widthConstant: 0, heightConstant: 0)
-        nameLabel.numberOfLines = 3
+        nameLabel.numberOfLines = 0
         nameLabel.font = UIFont.systemFont(ofSize: 18)
         
         containerView.addSubview(priceLabel)
-        priceLabel.anchor(nameLabel.bottomAnchor, left: imagePreview.rightAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 16, leftConstant: 8, bottomConstant: 0, rightConstant: 8, widthConstant: 0, heightConstant: 0)
+        priceLabel.anchor(nameLabel.bottomAnchor, left: imagePreview.rightAnchor, bottom: nil, right: nil, topConstant: 8, leftConstant: 8, bottomConstant: 0, rightConstant: 0, widthConstant: 120, heightConstant: 0)
+        priceLabel.numberOfLines = 0
         priceLabel.font = UIFont.systemFont(ofSize: 16)
         
         containerView.addSubview(strikedPriceLabel)
-        strikedPriceLabel.anchor(priceLabel.bottomAnchor, left: imagePreview.rightAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 8, bottomConstant: 0, rightConstant: 8, widthConstant: 0, heightConstant: 0)
+        strikedPriceLabel.anchor(priceLabel.bottomAnchor, left: imagePreview.rightAnchor, bottom: nil, right: nil, topConstant: 8, leftConstant: 8, bottomConstant: 0, rightConstant: 0, widthConstant: 120, heightConstant: 0)
         strikedPriceLabel.font = UIFont.systemFont(ofSize: 14)
         
         containerView.addSubview(minPriceLabel)
-        minPriceLabel.anchor(strikedPriceLabel.bottomAnchor, left: imagePreview.rightAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 8, bottomConstant: 0, rightConstant: 8, widthConstant: 0, heightConstant: 0)
+        minPriceLabel.anchor(strikedPriceLabel.bottomAnchor, left: imagePreview.rightAnchor, bottom: containerView.bottomAnchor, right: nil, topConstant: 8, leftConstant: 8, bottomConstant: 8, rightConstant: 0, widthConstant: 120, heightConstant: 0)
         minPriceLabel.font = UIFont.systemFont(ofSize: 12)
+        
+        containerView.addSubview(bookButton)
+        bookButton.anchor(nil, left: nil, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 16, rightConstant: 16, widthConstant: 72, heightConstant: 32)
+        bookButton.setTitle("Book", for: .normal)
+        bookButton.backgroundColor = .blue
         
     }
     
-    func configure(imageURL: String, name: String, price: String, strikedPrice: String, minPrice: Int) {
+    func configure(imageURL: String?, name: String, price: String, strikedPrice: String, minPrice: Int) {
         imagePreview.downloaded(from: imageURL)
         nameLabel.text = name
         priceLabel.text = price
@@ -99,6 +106,7 @@ class CustomTableViewCell: UITableViewCell {
     }
 }
 
+//MARK:- UIImageView Extension
 extension UIImageView {
     func downloaded(from url: URL, contentMode mode: ContentMode = .scaleAspectFit) {
         contentMode = mode
@@ -114,12 +122,15 @@ extension UIImageView {
             }
         }.resume()
     }
-    func downloaded(from link: String, contentMode mode: ContentMode = .scaleAspectFit) {
-        guard let url = URL(string: link) else { return }
-        downloaded(from: url, contentMode: mode)
+    func downloaded(from link: String?, contentMode mode: ContentMode = .scaleAspectFit) {
+        if let link = link {
+            guard let url = URL(string: link) else { return }
+            downloaded(from: url, contentMode: mode)
+        }
     }
 }
 
+//MARK:- String Extension
 extension String {
     func strikeThrough() -> NSAttributedString {
         let attributeString =  NSMutableAttributedString(string: self)
