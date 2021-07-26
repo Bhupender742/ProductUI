@@ -45,7 +45,12 @@ extension ViewController {
     
     private func styleTableView() {
         self.view.addSubview(myTableView)
-        myTableView.fillSuperview()
+        NSLayoutConstraint.activate([
+                                        myTableView.topAnchor.constraint(equalTo: self.view.topAnchor),
+                                        myTableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+                                        myTableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+                                        myTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+        ])
     }
 }
 
@@ -72,9 +77,7 @@ extension ViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: CustomTableViewCell.self), for: indexPath) as? CustomTableViewCell
         
         let imageURL = productList[indexPath.row].images?[0]
-        
         let productName = productList[indexPath.row].name ?? ""
-        
         let productPrice = productList[indexPath.row].price?.priceDisplay
         let strikedProductPrice = productList[indexPath.row].price?.strikeThroughPriceDisplay ?? ""
         let minProductPrice = productList[indexPath.row].price?.minPrice ?? 0

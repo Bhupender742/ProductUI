@@ -11,36 +11,43 @@ class CustomTableViewCell: UITableViewCell {
     
     private lazy var containerView: UIView = {
         let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     private lazy var imagePreview: UIImageView = {
         let image = UIImageView()
+        image.translatesAutoresizingMaskIntoConstraints = false
         return image
     }()
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var priceLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var strikedPriceLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var minPriceLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var bookButton: UIButton = {
        let button = UIButton()
+       button.translatesAutoresizingMaskIntoConstraints = false
        return button
     }()
 
@@ -66,32 +73,63 @@ class CustomTableViewCell: UITableViewCell {
     
     private func styleView() {
         contentView.addSubview(containerView)
-        containerView.fillSuperview()
+        NSLayoutConstraint.activate([
+                                        containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+                                        containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+                                        containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+                                        containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+        ])
         
         containerView.addSubview(imagePreview)
-        imagePreview.anchor(nil, left: containerView.leftAnchor, bottom: nil, right: nil, topConstant: 0, leftConstant: 8, bottomConstant: 8, rightConstant: 0, widthConstant: 100, heightConstant: 100)
-        imagePreview.anchorCenterYToSuperview(constant: 0)
+        NSLayoutConstraint.activate([
+                                        imagePreview.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
+                                        imagePreview.widthAnchor.constraint(equalToConstant: 100),
+                                        imagePreview.heightAnchor.constraint(equalToConstant: 100),
+                                        imagePreview.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
+        ])
         
         containerView.addSubview(nameLabel)
-        nameLabel.anchor(containerView.topAnchor, left: imagePreview.rightAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 8, bottomConstant: 0, rightConstant: 8, widthConstant: 0, heightConstant: 0)
+        NSLayoutConstraint.activate([
+                                        nameLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 8),
+                                        nameLabel.leadingAnchor.constraint(equalTo: imagePreview.trailingAnchor, constant: 8),
+                                        nameLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8)
+        ])
         nameLabel.numberOfLines = 0
         nameLabel.font = UIFont.systemFont(ofSize: 18)
         
         containerView.addSubview(priceLabel)
-        priceLabel.anchor(nameLabel.bottomAnchor, left: imagePreview.rightAnchor, bottom: nil, right: nil, topConstant: 8, leftConstant: 8, bottomConstant: 0, rightConstant: 0, widthConstant: 120, heightConstant: 0)
+        NSLayoutConstraint.activate([
+                                        priceLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
+                                        priceLabel.leadingAnchor.constraint(equalTo: imagePreview.trailingAnchor, constant: 8),
+                                        priceLabel.widthAnchor.constraint(equalToConstant: 120)
+        ])
         priceLabel.numberOfLines = 0
         priceLabel.font = UIFont.systemFont(ofSize: 16)
         
         containerView.addSubview(strikedPriceLabel)
-        strikedPriceLabel.anchor(priceLabel.bottomAnchor, left: imagePreview.rightAnchor, bottom: nil, right: nil, topConstant: 8, leftConstant: 8, bottomConstant: 0, rightConstant: 0, widthConstant: 120, heightConstant: 0)
+        NSLayoutConstraint.activate([
+                                        strikedPriceLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 8),
+                                        strikedPriceLabel.leadingAnchor.constraint(equalTo: imagePreview.trailingAnchor, constant: 8),
+                                        strikedPriceLabel.widthAnchor.constraint(equalToConstant: 120)
+        ])
         strikedPriceLabel.font = UIFont.systemFont(ofSize: 14)
         
         containerView.addSubview(minPriceLabel)
-        minPriceLabel.anchor(strikedPriceLabel.bottomAnchor, left: imagePreview.rightAnchor, bottom: containerView.bottomAnchor, right: nil, topConstant: 8, leftConstant: 8, bottomConstant: 8, rightConstant: 0, widthConstant: 120, heightConstant: 0)
+        NSLayoutConstraint.activate([
+                                        minPriceLabel.topAnchor.constraint(equalTo: strikedPriceLabel.bottomAnchor, constant: 8),
+                                        minPriceLabel.leadingAnchor.constraint(equalTo: imagePreview.trailingAnchor, constant: 8),
+                                        minPriceLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8),
+                                        minPriceLabel.widthAnchor.constraint(equalToConstant: 120)
+        ])
         minPriceLabel.font = UIFont.systemFont(ofSize: 12)
         
         containerView.addSubview(bookButton)
-        bookButton.anchor(nil, left: nil, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 16, rightConstant: 16, widthConstant: 72, heightConstant: 32)
+        NSLayoutConstraint.activate([
+                                        bookButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8),
+                                        bookButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
+                                        bookButton.widthAnchor.constraint(equalToConstant: 70),
+                                        bookButton.heightAnchor.constraint(equalToConstant: 32)
+        ])
         bookButton.setTitle("Book", for: .normal)
         bookButton.backgroundColor = .blue
         
