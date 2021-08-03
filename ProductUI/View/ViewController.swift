@@ -15,30 +15,29 @@ class ViewController: UIViewController {
         return tableView
     }()
 
-    var productList = [Product]()
+    private var productViewModel = ProductViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let urlString = "https://www.blibli.com/backend/search/products?searchTerm=Samsung&start=0&itemPerPage=10"
        
         setUpTableView()
         styleTableView()
         
-        NetworkManager<APIResponse>().fetchData(from: urlString) { (result) in
-            self.productList = (result.data?.products)!
-            self.myTableView.reloadData()
+        productViewModel.fetchProducts {
+            DispatchQueue.main.async {
+                self.myTableView.reloadData()
+            }
         }
         
     }
-
 
 }
 
 //MARK:- ViewController Extension
 extension ViewController {
+    
     private func setUpTableView() {
-        myTableView.register(CustomTableViewCell.self, forCellReuseIdentifier: String(describing: CustomTableViewCell.self))
+        myTableView.register(ProductCell.self, forCellReuseIdentifier: String(describing: ProductCell.self))
         myTableView.delegate = self
         myTableView.dataSource = self
     }
@@ -52,6 +51,7 @@ extension ViewController {
                                         myTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
         ])
     }
+    
 }
 
 //MARK:- TableViewDelegate Methods
@@ -69,24 +69,24 @@ extension ViewController: UITableViewDelegate {
 
 //MARK:- TableViewDataSource Methods
 extension ViewController: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return productList.count
+        return productViewModel.numberOfRowsInSection()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: CustomTableViewCell.self), for: indexPath) as? CustomTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProductCell.self), for: indexPath) as? ProductCell
         
-        let imageURL = productList[indexPath.row].images?[0]
-        let productName = productList[indexPath.row].name ?? ""
-        let productPrice = productList[indexPath.row].price?.priceDisplay
-        let strikedProductPrice = productList[indexPath.row].price?.strikeThroughPriceDisplay ?? ""
-        let minProductPrice = productList[indexPath.row].price?.minPrice ?? 0
+        let imageURL = productViewModel.getImageURL(indexPath: indexPath)
+        let productName = productViewModel.getProductName(indexPath: indexPath)
+        let productPrice = productViewModel.getProductPrice(indexPath: indexPath)
+        let strikedProductPrice = productViewModel.getStrikedProductPrice(indexPath: indexPath)
+        let minProductPrice = productViewModel.getMinProductPrice(indexPath: indexPath)
         
-        cell?.configure(imageURL: imageURL, name: productName, price: productPrice!, strikedPrice: strikedProductPrice, minPrice: minProductPrice)
+        cell?.configure(imageURL: imageURL, name: productName, price: productPrice, strikedPrice: strikedProductPrice, minPrice: minProductPrice)
         
         return cell!
     }
-    
     
 }
 

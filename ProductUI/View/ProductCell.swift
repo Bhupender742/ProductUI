@@ -1,5 +1,5 @@
 //
-//  CustomTableViewCell.swift
+//  ProductCell.swift
 //  ProductUI
 //
 //  Created by Bhupender Rawat on 22/07/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CustomTableViewCell: UITableViewCell {
+class ProductCell: UITableViewCell {
     
     private lazy var containerView: UIView = {
         let view = UIView()
@@ -70,6 +70,10 @@ class CustomTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+}
+
+extension ProductCell {
     
     private func styleView() {
         contentView.addSubview(containerView)
@@ -135,18 +139,20 @@ class CustomTableViewCell: UITableViewCell {
         
     }
     
-    func configure(imageURL: String?, name: String, price: String, strikedPrice: String, minPrice: Int) {
+    public func configure(imageURL: String?, name: String, price: String, strikedPrice: String, minPrice: Int) {
         imagePreview.downloaded(from: imageURL)
         nameLabel.text = name
         priceLabel.text = price
         strikedPriceLabel.attributedText = strikedPrice.strikeThrough()
         minPriceLabel.text = "minPrice: \(minPrice)"
     }
+    
 }
 
 //MARK:- UIImageView Extension
 extension UIImageView {
-    func downloaded(from url: URL, contentMode mode: ContentMode = .scaleAspectFit) {
+    
+    public func downloaded(from url: URL, contentMode mode: ContentMode = .scaleAspectFit) {
         contentMode = mode
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard
@@ -160,17 +166,20 @@ extension UIImageView {
             }
         }.resume()
     }
-    func downloaded(from link: String?, contentMode mode: ContentMode = .scaleAspectFit) {
+    
+    public func downloaded(from link: String?, contentMode mode: ContentMode = .scaleAspectFit) {
         if let link = link {
             guard let url = URL(string: link) else { return }
             downloaded(from: url, contentMode: mode)
         }
     }
+    
 }
 
 //MARK:- String Extension
 extension String {
-    func strikeThrough() -> NSAttributedString {
+    
+    public func strikeThrough() -> NSAttributedString {
         let attributeString =  NSMutableAttributedString(string: self)
         attributeString.addAttribute(
             NSAttributedString.Key.strikethroughStyle,
@@ -178,4 +187,5 @@ extension String {
                    range:NSMakeRange(0,attributeString.length))
         return attributeString
     }
+    
 }
