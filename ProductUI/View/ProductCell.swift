@@ -15,6 +15,12 @@ class ProductCell: UITableViewCell {
         return view
     }()
     
+    private lazy var priceContainerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     private lazy var imagePreview: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -101,29 +107,34 @@ extension ProductCell {
         nameLabel.numberOfLines = 0
         nameLabel.font = UIFont.systemFont(ofSize: 18)
         
-        containerView.addSubview(priceLabel)
+        containerView.addSubview(priceContainerView)
         NSLayoutConstraint.activate([
-                                        priceLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
-                                        priceLabel.leadingAnchor.constraint(equalTo: imagePreview.trailingAnchor, constant: 8),
-                                        priceLabel.widthAnchor.constraint(equalToConstant: 120)
+                                        priceContainerView.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
+                                        priceContainerView.leadingAnchor.constraint(equalTo: imagePreview.trailingAnchor, constant: 8),
+                                        priceContainerView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8),
+                                        priceContainerView.widthAnchor.constraint(equalToConstant: 120)
+        ])
+        
+        priceContainerView.addSubview(priceLabel)
+        NSLayoutConstraint.activate([
+                                        priceLabel.topAnchor.constraint(equalTo: priceContainerView.topAnchor),
+                                        priceLabel.leadingAnchor.constraint(equalTo: priceContainerView.leadingAnchor)
         ])
         priceLabel.numberOfLines = 0
         priceLabel.font = UIFont.systemFont(ofSize: 16)
         
-        containerView.addSubview(strikedPriceLabel)
+        priceContainerView.addSubview(strikedPriceLabel)
         NSLayoutConstraint.activate([
                                         strikedPriceLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 8),
-                                        strikedPriceLabel.leadingAnchor.constraint(equalTo: imagePreview.trailingAnchor, constant: 8),
-                                        strikedPriceLabel.widthAnchor.constraint(equalToConstant: 120)
+                                        strikedPriceLabel.leadingAnchor.constraint(equalTo: priceContainerView.leadingAnchor)
         ])
         strikedPriceLabel.font = UIFont.systemFont(ofSize: 14)
         
-        containerView.addSubview(minPriceLabel)
+        priceContainerView.addSubview(minPriceLabel)
         NSLayoutConstraint.activate([
                                         minPriceLabel.topAnchor.constraint(equalTo: strikedPriceLabel.bottomAnchor, constant: 8),
-                                        minPriceLabel.leadingAnchor.constraint(equalTo: imagePreview.trailingAnchor, constant: 8),
-                                        minPriceLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8),
-                                        minPriceLabel.widthAnchor.constraint(equalToConstant: 120)
+                                        minPriceLabel.leadingAnchor.constraint(equalTo: priceContainerView.leadingAnchor),
+                                        minPriceLabel.bottomAnchor.constraint(equalTo: priceContainerView.bottomAnchor)
         ])
         minPriceLabel.font = UIFont.systemFont(ofSize: 12)
         
