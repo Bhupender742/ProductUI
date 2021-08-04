@@ -77,13 +77,7 @@ extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ProductCell.self), for: indexPath) as? ProductCell
         
-        let imageURL = productViewModel.getImageURL(indexPath: indexPath)
-        let productName = productViewModel.getProductName(indexPath: indexPath)
-        let productPrice = productViewModel.getProductPrice(indexPath: indexPath)
-        let strikedProductPrice = productViewModel.getStrikedProductPrice(indexPath: indexPath)
-        let minProductPrice = productViewModel.getMinProductPrice(indexPath: indexPath)
-        
-        cell?.configure(imageURL: imageURL, name: productName, price: productPrice, strikedPrice: strikedProductPrice, minPrice: minProductPrice)
+        cell?.configure(cellViewModel: productViewModel.getCellModel(at: indexPath))
         
         return cell!
     }

@@ -150,53 +150,12 @@ extension ProductCell {
         
     }
     
-    public func configure(imageURL: String?, name: String, price: String, strikedPrice: String, minPrice: Int) {
-        imagePreview.downloaded(from: imageURL)
-        nameLabel.text = name
-        priceLabel.text = price
-        strikedPriceLabel.attributedText = strikedPrice.strikeThrough()
-        minPriceLabel.text = "minPrice: \(minPrice)"
-    }
-    
-}
-
-//MARK:- UIImageView Extension
-extension UIImageView {
-    
-    public func downloaded(from url: URL, contentMode mode: ContentMode = .scaleAspectFit) {
-        contentMode = mode
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard
-                let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
-                let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
-                let data = data, error == nil,
-                let image = UIImage(data: data)
-                else { return }
-            DispatchQueue.main.async() { [weak self] in
-                self?.image = image
-            }
-        }.resume()
-    }
-    
-    public func downloaded(from link: String?, contentMode mode: ContentMode = .scaleAspectFit) {
-        if let link = link {
-            guard let url = URL(string: link) else { return }
-            downloaded(from: url, contentMode: mode)
-        }
-    }
-    
-}
-
-//MARK:- String Extension
-extension String {
-    
-    public func strikeThrough() -> NSAttributedString {
-        let attributeString =  NSMutableAttributedString(string: self)
-        attributeString.addAttribute(
-            NSAttributedString.Key.strikethroughStyle,
-               value: NSUnderlineStyle.single.rawValue,
-                   range:NSMakeRange(0,attributeString.length))
-        return attributeString
+    public func configure(cellViewModel: ProductCellViewModel) {
+        imagePreview.downloaded(from: cellViewModel.productImageURL)
+        nameLabel.text = cellViewModel.productName
+        priceLabel.text = cellViewModel.productPrice
+        strikedPriceLabel.attributedText = cellViewModel.productStrikedPrice.strikeThrough()
+        minPriceLabel.text = "minPrice: \(cellViewModel.productMinPrice)"
     }
     
 }
